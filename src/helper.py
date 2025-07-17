@@ -13,6 +13,24 @@ os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 client = genai.GenerativeModel(api_key=GEMINI_API_KEY)
 
 
+def extract_text_from_pdf(uploaded_file):
+    """
+    Extracts text from a PDF file.
+    
+    Args:
+        uploaded_file (str): The path to the PDF file.
+        
+    Returns:
+        str: The extracted text.
+    """
+    doc = fitz.open(stream=uploaded_file.read(), filetype="pdf")
+    text = ""
+    for page in doc:
+        text += page.get_text()
+    return text
+
+
+
 def ask_genai(prompt, model_name="gemini-2.0-flash", temperature=0.5, max_tokens=500):
     """
     Sends a prompt to the Gemini (Google GenAI) model and returns the response.
